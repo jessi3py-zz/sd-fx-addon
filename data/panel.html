@@ -1,0 +1,19 @@
+<html>
+<head>
+  <style type="text/css" media="all">
+    body {
+      background-color: lightgray;
+    }
+    </style>
+  </head>
+<body>
+  <h1>Congratulations!</h1>
+  Your browser is now mdns service discovery enabled. Please use <b><i>navigator.sd</b></i> for these functions.
+  <ul>
+    <li>Use <b><i>navigator.sd.startDiscovery(target)</i></b> to look for the desired service, e.g. navigator.sd.startDiscovery('_http._tcp') to look for websites.</li>
+    <li>Use <b><i>navigator.sd.stopDiscovery()</i></b> to stop the discovery process.</li>
+    <li>Use <b><i>navigator.sd.registerService(serviceName, port, options)</i></b> to advertise your own service.</li>
+    <li>Finally, use <b><i>registerListener(topic, listener)</i></b> and <b><i>removeListener(topic, listener)</i></b> to listen for 'discoverd' events.</li>
+  </ul
+</body>
+</html>

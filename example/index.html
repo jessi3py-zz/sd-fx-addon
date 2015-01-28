@@ -1,0 +1,99 @@
+<html>
+
+<head>
+  <title>DNS-SD Test Page</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <h1>DNS-SD Sevices </h1>
+  <p>
+    <input type="checkbox" id="showIPCheckBox" onclick = "onShowIPChanged()"> Show IP address
+  </p>
+  <p>
+    <select id="targetList" onchange="onTargetChanged()">
+      <option value="_https._tcp">Secure Web Site</option>
+      <option value="_http._tcp" selected="selected">Web Site</option>
+      <option value="_ipp._tcp">Internet Printer</option>
+      <option value="_nfs._tc">Network File System</option>
+      <option value="_printer._tcp">UNIX Printer</option>
+      <option value="_rfb._tcp">VNC Remote Access</option>
+      <option value="_skype._tcp">Skype VoIP</option>
+      <option value="_smb._tcp">Microsoft Windows Network</option>
+      <option value="_ssh._tcp">SSH Remote Terminal</option>
+      <option value="_workstation._tcp">Workstation</option>
+    </select>
+  </p>
+  <textarea id="output-box" rows="30" cols="80"></textarea>
+
+  <script Language="JavaScript">
+    var doShowIP = false;
+    var currentTarget;
+    var outputBox = document.getElementById("output-box");
+
+    function onShowIPChanged() {
+      if (!navigator.sd) {
+        return;
+      }
+
+      doShowIP = document.getElementById ("showIPCheckBox").checked;
+      console.log("show IP: " + doShowIP);
+
+      navigator.sd.stopDiscovery();
+      startDiscovery();
+    }
+
+    function onTargetChanged() {
+      if (!navigator.sd) {
+        return;
+      }
+
+      navigator.sd.stopDiscovery();
+      var target = document.getElementById("targetList");
+      currentTarget = target.options[target.selectedIndex].value + '.local';
+
+      startDiscovery();
+    }
+
+    function startDiscovery() {
+      outputBox.value = "";
+      navigator.sd.startDiscovery(currentTarget);
+    }
+
+    window.addEventListener('load', function() {
+      if (!navigator.sd) {
+        alert("Browser does not support service discovery!");
+        return
+      }
+      outputBox.focus();
+
+      // navigator.sd.registerService('_http._tcp.local', 8080, {});
+      navigator.sd.registerListener('discovered', handler);
+      onTargetChanged();
+      startDiscovery();
+    });
+
+    window.addEventListener('unload', function() {
+      if (!navigator.sd) {
+        return;
+      }
+
+      navigator.sd.removeListener('discovered', handler);
+      navigator.sd.stopDiscovery();
+    });
+
+    var handler = function(svc) {
+      console.log('discovered: ' + svc);
+      var res = svc.split(":");
+      if (res.length != 3) {
+        return;
+      }
+
+      // svc = service name : domain name : address
+      outputBox.value += (res[1] + ' (' + res[0] + ') ' + (doShowIP ? res[2] : '') + '\n');
+    };
+  </script>
+</body>
+
+</html>

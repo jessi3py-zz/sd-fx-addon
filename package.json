@@ -1,0 +1,9 @@
+{
+  "name": "service-discovery",
+  "title": "Service Discovery (mdns/dns-sd)",
+  "id": "jid1-yuX11hHXmDf1Ag",
+  "description": "Firefox add-on to support service discovery, currently supporting mdns/dns-sd only.",
+  "author": "Jessica Jong",
+  "license": "MPL 2.0",
+  "version": "0.1"
+}
